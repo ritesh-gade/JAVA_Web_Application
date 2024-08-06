@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="warTarget" basedir=".">
+	<property name="tomcat" value="C:\Program Files\Apache Software Foundation\Tomcat 10.1"/>
+	<property name="tomcat.deployment" value="${tomcat}/webapps"/>	
+	<property name="tomcat.bin" value="${tomcat}/bin"/>
+	<property name="base" value="."/>
+	<property name="source" value="${base}/src"/>
+	<!--<property name="webapp.url" value="http://localhost:8082/War_JAVA"/> -->
+	
+	<target name="warTarget">
+		<war warfile="Java_Project.war" needxmlfile="false">
+			<fileset dir="${source}/main/webapp"/>
+		</war>
+		<echo>War Successfully</echo>
+		<antcall target="deployTarget"/>
+	</target>
+	
+	<target name="deployTarget">
+		<copy file="${base}/Java_Project.war" todir="${tomcat.deployment}"/>
+		<echo>Deployment Successfully</echo>
+		<antcall target="startTomcat"/>
+		<antcall target="runOnBrowser"/>
+	</target>
+	<target name="startTomcat">
+		<exec executable="${tomcat.bin}/startup.bat"/>
+		<echo>Start Tomcat</echo>
+	</target> 
+	
+	<target name="runOnBrowser">
+	    <java classname="RunOpenBrowser" classpath="${base}">
+	        <!-- Additional attributes if needed -->
+	    </java>
+	    <echo>Opening into browser...</echo>
+	</target>
+
+
+	<target name="stopTomcat">
+		<exec executable="${tomcat.bin}/startup.bat"/>
+		<echo>Stop Tomcat</echo>
+	</target>
+	
+</project>
